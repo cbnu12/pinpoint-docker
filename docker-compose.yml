@@ -48,6 +48,7 @@ services:
     restart: always
     depends_on:
       - zoo1
+    privileged: true
 
   pinpoint-mysql:
     build:
@@ -72,6 +73,7 @@ services:
       - mysql_data:/var/lib/mysql
     networks:
       - pinpoint
+    privileged: true
 
   pinpoint-web:
     build:
@@ -110,6 +112,7 @@ services:
       - "pinpoint-mysql:pinpoint-mysql"
     networks:
       - pinpoint
+    privileged: true
 
   pinpoint-collector:
     build:
@@ -151,6 +154,7 @@ services:
       - LOGGING_LEVEL_ROOT=${COLLECTOR_LOGGING_LEVEL_ROOT}
       - FLINK_CLUSTER_ENABLE=${FLINK_CLUSTER_ENABLE}
       - FLINK_CLUSTER_ZOOKEEPER_ADDRESS=${FLINK_CLUSTER_ZOOKEEPER_ADDRESS}
+    privileged: true
 
   pinpoint-batch:
     build:
@@ -195,6 +199,7 @@ services:
       - "pinpoint-mysql:pinpoint-mysql"
     networks:
       - pinpoint
+    privileged: true
       
   #zookeepers
   zoo1:
@@ -212,6 +217,7 @@ services:
       ZOO_SERVERS: server.1=0.0.0.0:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
     networks:
       - pinpoint
+    privileged: true
 
   zoo2:
     image: zookeeper:3.4.13
@@ -228,6 +234,7 @@ services:
       ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=0.0.0.0:2888:3888 server.3=zoo3:2888:3888
     networks:
       - pinpoint
+    privileged: true
 
   zoo3:
     image: zookeeper:3.4.13
@@ -244,6 +251,7 @@ services:
       ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=0.0.0.0:2888:3888
     networks:
       - pinpoint
+    privileged: true
 
   ##flink
   jobmanager:
@@ -267,6 +275,7 @@ services:
       - pinpoint
     depends_on:
       - zoo1
+    privileged: true
 
   taskmanager:
     build:
@@ -295,6 +304,7 @@ services:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
     networks:
       - pinpoint
+    privileged: true
 
 volumes:
   data-volume:
